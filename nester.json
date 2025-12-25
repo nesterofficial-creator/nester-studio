@@ -1,0 +1,31 @@
+{
+  "admins": {
+    "xWZKOm8AVtfmLsMht3Tmgkgi6Gl1": true
+  },
+
+  "users": {
+    "xWZKOm8AVtfmLsMht3Tmgkgi6Gl1": {
+      "name": "Admin User",
+      "email": "nesterstu@gmail.com",
+      "createdAt": 1700000000000
+    }
+  },
+
+  "books": {
+    "-NtA1BookId": {
+      "title": "The brain ;the story of you",
+      "author": "Nester Studio",
+      "imageUrl": "https://drive.google.com/uc?export=view&id=1tPTxjJl0m8inEk17BzfFgmgcs3mfIOdI",
+      "downloadUrl": "https://drive.google.com/uc?export=download&id=1Z3l-wfl2cLyzw58OiU1m6QfXuSb-4bvR",
+      "description": "A creative book",
+      "createdAt": 1700000000000,
+      "createdBy": "xWZKOm8AVtfmLsMht3Tmgkgi6Gl1"
+    }
+  },
+
+  "graphics": {},
+
+  "nature": {},
+
+  "news": {}
+}
