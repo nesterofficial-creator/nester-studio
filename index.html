@@ -47,6 +47,9 @@
     input[type=text],input[type=password],input[type=email],textarea,select{padding:12px;border-radius:8px;border:1px solid #e6e6e9}
     .error{color:#b00020;font-size:0.95rem;margin-top:6px}
     .admin-badge{background:#111;color:#fff;padding:6px 8px;border-radius:6px;font-weight:700}
+    .links a{color:inherit;text-decoration:none;padding:6px 8px;border-radius:6px}
+    .links a.active{color:var(--brand-1);font-weight:800;background:rgba(102,126,234,0.06)}
+    .card h3{margin:0 0 8px 0}
     @media (max-width:880px){ .nav-row{padding:12px} .links{display:none} .hamburger{display:flex} }
     @media (max-width:600px){
       .hero{padding:60px 20px 40px}
@@ -73,12 +76,12 @@
 
       <nav>
         <div class="links" id="desktop-links">
-          <a href="#books-section" onclick="scrollToSection('books-section')">Books</a>
-          <a href="#graphics-section" onclick="scrollToSection('graphics-section')">Graphics</a>
-          <a href="#nature-section" onclick="scrollToSection('nature-section')">Nature</a>
-          <a href="#news-section" onclick="scrollToSection('news-section')">News</a>
-          <a href="#contact-section" onclick="scrollToSection('contact-section')">Contact</a>
-          <a href="#about-section" onclick="scrollToSection('about-section')">About</a>
+          <a href="#books" onclick="showSection('books')">Books</a>
+          <a href="#graphics" onclick="showSection('graphics')">Graphics</a>
+          <a href="#nature" onclick="showSection('nature')">Nature</a>
+          <a href="#news" onclick="showSection('news')">News</a>
+          <a href="#contact" onclick="showSection('contact')">Contact</a>
+          <a href="#about" onclick="showSection('about')">About</a>
           <a href="privacy-policy.html">Privacy Policy</a>
 
         </div>
@@ -98,13 +101,13 @@
   </header>
 
   <div class="mobile-menu" id="mobile-menu">
-    <a href="#books-section" onclick="scrollToSection('books-section'); toggleMobileMenu()">Books</a>
-    <a href="#graphics-section" onclick="scrollToSection('graphics-section'); toggleMobileMenu()">Graphics</a>
-    <a href="#nature-section" onclick="scrollToSection('nature-section'); toggleMobileMenu()">Nature</a>
-    <a href="#news-section" onclick="scrollToSection('news-section'); toggleMobileMenu()">News</a>
-    <a href="#contact-section" onclick="scrollToSection('contact-section'); toggleMobileMenu()">Contact</a>
-    <a href="#about-section" onclick="scrollToSection('about-section'); toggleMobileMenu()">About</a>
-    <a href="privacy-policy.html" onclick="toggleMobileMenu()">Privacy Policy</a>
+  <a href="#books" onclick="showSection('books'); toggleMobileMenu()">Books</a>
+  <a href="#graphics" onclick="showSection('graphics'); toggleMobileMenu()">Graphics</a>
+  <a href="#nature" onclick="showSection('nature'); toggleMobileMenu()">Nature</a>
+  <a href="#news" onclick="showSection('news'); toggleMobileMenu()">News</a>
+  <a href="#contact" onclick="showSection('contact'); toggleMobileMenu()">Contact</a>
+  <a href="#about" onclick="showSection('about'); toggleMobileMenu()">About</a>
+  <a href="privacy-policy.html" onclick="toggleMobileMenu()">Privacy Policy</a>
   </div>
 
   <main>
@@ -324,6 +327,34 @@
         document.getElementById('f-email').focus();
       });
     }
+    
+      // Show/hide top-level sections. 'home' shows hero + highlights + featured.
+      function updateActiveNav(activeId){
+        document.querySelectorAll('.links a').forEach(a=>{
+          try{ const href = a.getAttribute('href')||''; const target = href.replace('#',''); a.classList.toggle('active', target===activeId); }catch(e){}
+        });
+        document.querySelectorAll('#mobile-menu a').forEach(a=>{
+          try{ const href = a.getAttribute('href')||''; const target = href.replace('#',''); a.classList.toggle('active', target===activeId); }catch(e){}
+        });
+      }
+      function showSection(id){
+        const all = Array.from(document.querySelectorAll('main > section'));
+        if(id === 'home'){
+          all.forEach(s=>{ s.hidden = !(s.id==='home' || s.id==='home-highlights' || s.id==='featured'); });
+          const el = document.getElementById('home'); if(el) el.scrollIntoView({behavior:'smooth'});
+        } else {
+          all.forEach(s=> s.hidden = s.id !== id);
+          const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'});
+        }
+        try{ history.replaceState(null,'', '#'+id); }catch(e){}
+        updateActiveNav(id);
+      }
+
+      // initialize view from hash (or default to home)
+      window.addEventListener('load', ()=>{
+        const initial = (location.hash||'#home').replace('#','') || 'home';
+        showSection(initial);
+      });
   </script>
 
   <!-- Firebase & App logic -->
