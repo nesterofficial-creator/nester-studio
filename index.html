@@ -1,545 +1,650 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nest Films </title>
-
-  <!-- SEO Metadata -->
-  <meta name="description" content="Nest Films – A premium streaming platform for films you produced or legally distribute.">
-  <meta name="keywords" content="Nest Films, film streaming, licensed films, independent films">
-  <meta name="author" content="Nest Films">
-
-  <!-- Brand Styles -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nester Studio — Creative Hub (Firebase)</title>
+  <meta name="description" content="Nester Studio — books, graphic design, nature media.">
+  <meta name="author" content="Nester Studio">
+  <meta name="google-adsense-account" content="ca-pub-4483015607837705">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4483015607837705"
+     crossorigin="anonymous"></script>
   <style>
-    :root {
-      --brand-primary: #0ea5a4;
-      --brand-bg: #0f1720;
-      --brand-card: #0b1220;
-      --brand-text: #e6eef6;
-      --brand-sub: #9fb8c6;
+    :root{
+      --bg:#fff;--muted:#666;--brand-1:#667eea;--brand-2:#764ba2;
+      --radius:12px;--card-shadow:0 8px 30px rgba(15,15,20,0.06);--max-width:1200px;
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
     }
-
-    body {
-      font-family: system-ui, -apple-system, Roboto;
-      margin: 0;
-      background: var(--brand-bg);
-      color: var(--brand-text);
-    }
-
-    /* NAVBAR */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 32px;
-      background: #0d1a2a;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      box-shadow: 0 4px 12px rgba(0,0,0,.4);
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--brand-primary);
-    }
-
-    .nav-links a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: var(--brand-text);
-      font-weight: 500;
-    }
-
-    /* HERO */
-    .hero {
-      padding: 80px 32px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      margin-bottom: 12px;
-    }
-
-    .hero p {
-      font-size: 20px;
-      color: var(--brand-sub);
-      max-width: 700px;
-      margin: auto;
-    }
-
-    /* LAYOUT */
-    .container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 32px;
-      display: flex;
-      gap: 24px;
-    }
-
-    .player {
-      flex: 1;
-      background: var(--brand-card);
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 8px 30px rgba(2,6,23,.6);
-    }
-
-    video {
-      width: 100%;
-      border-radius: 10px;
-      background: black;
-    }
-
-    .sidebar {
-      width: 320px;
-    }
-
-    .item {
-      background: #071023;
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .item:hover {
-      background: #0a142b;
-    }
-
-    .item.active {
-      outline: 2px solid var(--brand-primary);
-    }
-
-    button {
-      background: var(--brand-primary);
-      border: none;
-      color: #012;
-      padding: 10px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    button.secondary {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,.1);
-      color: var(--brand-text);
-    }
-
-    .footer {
-      margin-top: 80px;
-      padding: 30px;
-      text-align: center;
-      color: var(--brand-sub);
-    }
-
-    .note {
-      font-size: 13px;
-      color: var(--brand-sub);
-      margin-top: 12px;
-    }
-
-    /* FORM (Sign Up & Login) */
-    .form-region {
-      background: #071426;
-      padding: 12px;
-      border-radius: 10px;
-      margin-top: 18px;
-    }
-
-    .form-region h4 {
-      margin: 0 0 8px 0;
-      color: var(--brand-primary);
-      font-size: 16px;
-    }
-
-    .signup-form, .login-form {
-      display: none;
-      margin-top: 8px;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .signup-form input, .login-form input, .signup-form select {
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,.06);
-      background: rgba(255,255,255,.02);
-      color: var(--brand-text);
-    }
-
-    .signup-form .form-actions, .login-form .form-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-    }
-
-    .signup-success, .login-success {
-      color: #7fffd4;
-      font-size: 13px;
-      margin-top: 8px;
-    }
-
-    /* Floating Icons */
-    .floating-icons {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 1000;
-    }
-
-    .floating-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 24px;
-      transition: 0.3s;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    .floating-icon.whatsapp {
-      background: #25d366;
-      color: white;
-    }
-
-    .floating-icon.whatsapp:hover {
-      background: #128c7e;
-      transform: scale(1.1);
-    }
-
-    .floating-icon.email {
-      background: var(--brand-primary);
-      color: white;
-    }
-
-    .floating-icon.email:hover {
-      background: #0b8a89;
-      transform: scale(1.1);
-    }
-
-    /* Mobile responsiveness */
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-        padding: 0 16px;
-      }
-      .sidebar {
-        width: 100%;
-        order: -1; /* Move sidebar above player on mobile */
-      }
-      .hero {
-        padding: 60px 16px;
-      }
-      .hero h1 {
-        font-size: 32px;
-      }
-      .hero p {
-        font-size: 16px;
-      }
-      .navbar {
-        padding: 18px 16px;
-      }
-      .nav-links {
-        display: none; /* Hide nav links on mobile, or implement hamburger menu */
-      }
-      .player {
-        padding: 16px;
-      }
-      .floating-icons {
-        right: 16px;
-        bottom: 16px;
-      }
-      .floating-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 20px;
-      }
+    *{box-sizing:border-box} html,body{height:100%;margin:0}
+    body{background:var(--bg);color:#0d0d0d;line-height:1.6;-webkit-font-smoothing:antialiased}
+    header{position:sticky;top:0;background:transparent;backdrop-filter: blur(6px);z-index:1000;box-shadow:0 1px 0 rgba(15,15,20,0.04)}
+    .nav-row{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;height:72px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+    .brand h1{font-size:1.05rem;margin:0;font-weight:700}
+    .links{display:flex;gap:18px;align-items:center}
+    .cta{display:flex;gap:10px;align-items:center}
+    .btn{padding:8px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:700}
+    .btn-primary{background:var(--brand-1);color:#fff}
+    .btn-outline{background:transparent;border:2px solid rgba(0,0,0,0.06)}
+    .hero{background-image:linear-gradient(135deg,var(--brand-1),var(--brand-2)), url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1200&q=80');background-blend-mode:overlay;background-size:cover;background-position:center;color:white;padding:90px 20px 60px;text-align:center;border-bottom-left-radius:30px;border-bottom-right-radius:30px}
+    .container{max-width:var(--max-width);margin:0 auto;padding:48px 20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+    .card{background:white;border-radius:var(--radius);box-shadow:var(--card-shadow);padding:18px}
+    .media-cover{height:260px;border-radius:10px;background:linear-gradient(135deg,#f0f3ff,#fff);display:flex;align-items:center;justify-content:center;font-size:3rem;background-size:cover;background-position:center}
+    .media-meta{padding-top:12px}
+    .search-bar{margin:16px 0 8px;display:flex;gap:8px}
+    .search-input{flex:1;max-width:420px;padding:8px 10px;border-radius:8px;border:1px solid rgba(15,15,20,0.06);font-size:0.9rem}
+    .fab{position:fixed;right:20px;bottom:88px;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#25D366;color:#fff;box-shadow:0 12px 30px rgba(37,211,102,0.14);z-index:1200}
+    .fab-email{position:fixed;right:20px;bottom:22px;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#007bff;color:#fff;box-shadow:0 12px 30px rgba(0,123,255,0.14);z-index:1199}
+    footer{background:#271611;color:#fff;padding:36px 20px;margin-top:48px}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:2000}
+    .modal-backdrop.show{display:flex}
+    .modal{background:white;border-radius:12px;padding:20px;width:100%;max-width:520px;box-shadow:0 24px 60px rgba(2,6,23,0.4)}
+    .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    input[type=text],input[type=password],input[type=email],textarea,select{padding:12px;border-radius:8px;border:1px solid #e6e6e9}
+    .error{color:#b00020;font-size:0.95rem;margin-top:6px}
+    .admin-badge{background:#111;color:#fff;padding:6px 8px;border-radius:6px;font-weight:700}
+    @media (max-width:880px){ .nav-row{padding:12px} .links{display:none} }
+    @media (max-width:600px){
+      .hero{padding:60px 20px 40px}
+      .hero h2{font-size:1.5rem}
+      .hero p{font-size:0.9rem}
+      .container{padding:32px 20px}
+      .grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+      .card{padding:14px}
+      .media-cover{height:200px}
+      .btn{padding:6px 12px;font-size:0.9rem}
+      .fab,.fab-email{bottom:16px;right:16px;width:48px;height:48px}
+      .fab svg,.fab-email svg{width:24px;height:24px}
+      footer{font-size:0.85rem}
     }
   </style>
 </head>
 <body>
+  <header>
+    <div class="nav-row" role="navigation" aria-label="Main navigation">
+      <a class="brand" href="#home" onclick="showSection('home')">
+        <svg viewBox="0 0 48 48" aria-hidden="true" width="44" height="44"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#667eea"/><stop offset="1" stop-color="#764ba2"/></linearGradient></defs><rect rx="10" width="48" height="48" fill="url(#g)"/><text x="50%" y="54%" font-size="18" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">NS</text></svg>
+        <h1>Nester Studio</h1>
+      </a>
 
-  <!-- NAVIGATION BAR -->
-  <div class="navbar">
-    <div class="logo">Nest Films</div>
-    <div class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#library">Library</a>
-      <button id="loginNavBtn">Login</button>
-      <button id="signupNavBtn">Sign Up</button>
-    </div>
-  </div>
+      <nav>
+        <div class="links" id="desktop-links">
+          <a href="#books" onclick="showSection('books')">Books</a>
+          <a href="#graphics" onclick="showSection('graphics')">Graphics</a>
+          <a href="#nature" onclick="showSection('nature')">Nature</a>
+          <a href="#news" onclick="showSection('news')">News</a>
+          <a href="#contact" onclick="showSection('contact')">Contact</a>
+          <a href="#about" onclick="showSection('about')">About</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
 
-  <!-- HERO SECTION -->
-  <div class="hero" id="home">
-    <h1>Welcome to Nest Films</h1>
-    <p>Stream high-quality films you produced or legally license. Your stories, beautifully delivered to your audience.</p>
-  </div>
-
-  <!-- MAIN APP LAYOUT -->
-  <div class="container" id="library">
-    <div class="player">
-      <video id="video" controls playsinline crossorigin="anonymous"></video>
-
-      <div class="row" style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-        <div>
-          <div id="title" style="font-weight:700; font-size:20px;">Select a Film</div>
-          <div id="desc" class="note">Choose a title from your licensed Nest Films library.</div>
         </div>
-        <div style="display:flex; gap:8px;">
-          <button id="downloadBtn" class="secondary" disabled>Download</button>
-          <button id="fullscreenBtn">Fullscreen</button>
+      </nav>
+
+      <div class="cta" id="cta-area">
+        <!-- Login / Signup or profile will be rendered here -->
+        <button class="btn btn-outline" onclick="renderLogin()">Log in</button>
+        <button class="btn btn-primary" onclick="renderSignup()">Sign up</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero" aria-labelledby="hero-title">
+      <div class="inner">
+        <h2 id="hero-title">Nester Studio</h2>
+        <p>Creating beauty through books, design, and nature — professional services, portfolios, and downloadable resources.</p>
+        <div style="margin-top:18px">
+          <button class="btn btn-primary" onclick="showSection('books')">Browse Books</button>
+          <button class="btn" style="margin-left:10px" onclick="showSection('graphics')">View Portfolio</button>
         </div>
       </div>
+    </section>
 
-      <div id="status" class="note"></div>
-    </div>
+    <section id="featured" class="container">
+      <h2>Featured Books</h2>
+      <p style="color:var(--muted);margin-bottom:14px">Selected works from our library — click an item for details and downloads.</p>
+      <div id="featured-grid" class="grid">
+        <!-- live content populated from Firebase -->
+      </div>
+    </section>
 
-    <!-- FILM LIBRARY -->
-    <div class="sidebar">
-      <h3>Nest Films Library</h3>
+    <section id="books" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Book Collection</h2>
+      <p style="color:var(--muted)">Download sample chapters or the full PDFs.</p>
 
-      <!-- FORM REGION -->
-      <div id="form-add-region" class="form-region">
-        <h4>Join Nest Films</h4>
-        <div class="note">Create an account or login to manage your licensed films.</div>
-
-        <!-- Signup Form -->
-        <form id="signupForm" class="signup-form" aria-hidden="true">
-          <input type="text" id="signupName" placeholder="Full name" required />
-          <input type="email" id="signupEmail" placeholder="Email address" required />
-          <select id="signupRegion" required>
-            <option value="" disabled selected>Select country or region</option>
-            <option value="United States">United States</option>
-            <option value="Canada">Canada</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="Australia">Australia</option>
-            <option value="India">India</option>
-            <option value="Germany">Germany</option>
-            <option value="France">France</option>
-            <option value="other">Other (please specify)</option>
-          </select>
-          <input type="text" id="signupOtherRegion" placeholder="Specify country or region" style="display:none" />
-          <input type="password" id="signupPassword" placeholder="Password" required />
-          <div class="form-actions">
-            <button type="submit">Create Account</button>
-            <button type="button" id="signupCancel" class="secondary">Cancel</button>
-          </div>
-          <div id="signupMessage" class="signup-success" style="display:none"></div>
-        </form>
-
-        <!-- Login Form -->
-        <form id="loginForm" class="login-form" aria-hidden="true">
-          <input type="email" id="loginEmail" placeholder="Email address" required />
-          <input type="password" id="loginPassword" placeholder="Password" required />
-          <div class="form-actions">
-            <button type="submit">Login</button>
-            <button type="button" id="loginCancel" class="secondary">Cancel</button>
-          </div>
-          <div id="loginMessage" class="login-success" style="display:none"></div>
-        </form>
+      <div class="search-bar">
+        <input id="search-books" class="search-input" type="search" placeholder="Search books..." oninput="searchSection('books', this.value)">
+        <div id="books-admin-controls" style="margin-left:8px"></div>
       </div>
 
-      <!-- Example Library Items -->
-      <h4 style="margin-top:20px; color:var(--brand-primary);">Cartoons</h4>
-      <div class="item" data-title="Cartoon 1" data-stream="https://example.com/cartoon1/stream.m3u8" data-download="https://example.com/cartoon1/master.mp4">Cartoon 1</div>
-      <h4 style="margin-top:20px; color:var(--brand-primary);">Horror</h4>
-      <div class="item" data-title="Horror Film 1" data-stream="https://example.com/horror1/stream.m3u8" data-download="https://example.com/horror1/master.mp4">Horror Film 1</div>
-      <h4 style="margin-top:20px; color:var(--brand-primary);">Drama</h4>
-      <div class="item" data-title="Drama Film 1" data-stream="https://example.com/drama1/stream.m3u8" data-download="https://example.com/drama1/master.mp4">Drama Film 1</div>
-      <h4 style="margin-top:20px; color:var(--brand-primary);">Action</h4>
-      <div class="item" data-title="Action Film 1" data-stream="https://example.com/action1/stream.m3u8" data-download="https://example.com/action1/master.mp4">Action Film 1</div>
-      <h4 style="margin-top:20px; color:var(--brand-primary);">Series</h4>
-      <div class="item" data-title="Series Episode 1" data-stream="https://example.com/series1/stream.m3u8" data-download="https://example.com/series1/master.mp4">Series Episode 1</div>
+      <div id="books-grid" class="grid" style="margin-top:16px"></div>
+    </section>
+
+    <section id="graphics" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Graphic Portfolio</h2>
+      <div class="search-bar">
+        <input id="search-graphics" class="search-input" type="search" placeholder="Search graphics..." oninput="searchSection('graphics', this.value)">
+        <div id="graphics-admin-controls" style="margin-left:8px"></div>
+      </div>
+      <div id="graphics-grid" class="grid" style="margin-top:16px"></div>
+    </section>
+
+    <section id="nature" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Nature Gallery</h2>
+      <div class="search-bar">
+        <input id="search-nature" class="search-input" type="search" placeholder="Search nature..." oninput="searchSection('nature', this.value)">
+        <div id="nature-admin-controls" style="margin-left:8px"></div>
+      </div>
+      <div id="nature-grid" class="grid" style="margin-top:16px"></div>
+    </section>
+
+    <section id="news" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Latest News</h2>
+      <div class="search-bar">
+        <input id="search-news" class="search-input" type="search" placeholder="Search news..." oninput="searchSection('news', this.value)">
+        <div id="news-admin-controls" style="margin-left:8px"></div>
+      </div>
+      <div id="news-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:12px"></div>
+    </section>
+
+    <section id="about" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">About Nester Studio</h2>
+      <p style="color:var(--muted)">Welcome to Nester Studio, your creative hub for books, graphic design, and nature media.</p>
+      <div style="margin-top:20px">
+        <p>We specialize in creating beautiful and meaningful content across various mediums. From publishing insightful books to designing stunning graphics and capturing the essence of nature through media, our mission is to inspire and connect with our audience.</p>
+        <p>Founded with a passion for creativity and innovation, Nester Studio is dedicated to delivering high-quality resources and services that enrich lives and foster artistic expression.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Contact Us</h2>
+      <p style="color:var(--muted)">Get in touch with us for inquiries, collaborations, or more information.</p>
+      <div style="margin-top:20px">
+        <p><strong>Phone:</strong> +250796104069</p>
+        <p><strong>Email:</strong> <a href="mailto:nesterstu@gmail.com">nesterstu@gmail.com</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="max-width:var(--max-width);margin:18px auto 0;color:rgba(255,255,255,0.6);font-size:0.92rem;text-align:center">&copy; <span id="year"></span> Nester Studio. All rights reserved.</div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a class="fab" href="https://wa.me/+250796104069" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="28" height="28" viewBox="0 0 32 32" fill="white"><path d="M16.003 3.2c-7.063 0-12.8 5.737-12.8 12.8 0 2.26.589 4.462 1.707 6.4L3.2 28.8l6.595-1.691c1.86.986 3.953 1.491 6.208 1.491h.001c7.063 0 12.8-5.737 12.8-12.8s-5.737-12.8-12.8-12.8zm0 23.04h-.001c-1.962 0-3.875-.524-5.545-1.514l-.397-.235-3.915 1.004 1.04-3.818-.259-.392c-1.058-1.6-1.618-3.455-1.618-5.405 0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10zm5.486-7.52c-.3-.15-1.767-.867-2.04-.967-.273-.1-.473-.15-.673.15-.2.3-.773.967-.947 1.167-.173.2-.347.223-.646.075-.3-.15-1.263-.465-2.404-1.482-.888-.79-1.487-1.761-1.66-2.061-.173-.3-.018-.462.13-.612.134-.133.3-.347.45-.52.15-.174.2-.3.3-.5.1-.2.05-.375-.025-.525-.075-.15-.673-1.623-.923-2.223-.243-.583-.49-.503-.673-.513-.173-.008-.373-.01-.573-.01-.2 0-.525.075-.8.375-.273.3-1.05 1.025-1.05 2.5s1.075 2.9 1.225 3.1c.15.2 2.113 3.225 5.113 4.525.715.308 1.27.492 1.704.63.716.228 1.367.196 1.883.119.575-.086 1.767-.722 2.017-1.421.25-.7.25-1.3.175-1.421-.075-.12-.275-.198-.575-.347z"/></svg></a>
+
+  <!-- Floating Email -->
+  <a class="fab-email" href="mailto:nesterstu@gmail.com" aria-label="Email"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+
+  <!-- Shared modal backdrop -->
+  <div id="modal-backdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button style="float:right;background:transparent;border:none;font-size:18px;cursor:pointer" onclick="closeModal()" aria-label="Close">✕</button>
+      <div id="modal-content"></div>
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    Nest Films © 2025 • All content on this platform is legally owned or licensed.
-  </div>
+  <script>
+    // small utilities
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-  <!-- HLS PLAYER SCRIPT -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0/dist/hls.min.js"></script>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-    // Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyBdRdA9cmfQiUy6yVZM-i3A704dRXR6NkU",
-      authDomain: "nest-films.firebaseapp.com",
-      projectId: "nest-films",
-      storageBucket: "nest-films.appspot.com",
-      messagingSenderId: "759452089508",
-      appId: "1:759452089508:web:0ae3f499daec12302dba31"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // AUTH STATE
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        console.log("Logged in user:", user.email);
-      } else {
-        console.log("No user logged in");
-      }
-    });
-
-    // Signup/Login Form Elements
-    const signupForm = document.getElementById('signupForm');
-    const signupCancel = document.getElementById('signupCancel');
-    const signupMessage = document.getElementById('signupMessage');
-    const signupNavBtn = document.getElementById('signupNavBtn');
-    const signupRegionEl = document.getElementById('signupRegion');
-    const signupOtherRegion = document.getElementById('signupOtherRegion');
-
-    const loginForm = document.getElementById('loginForm');
-    const loginCancel = document.getElementById('loginCancel');
-    const loginMessage = document.getElementById('loginMessage');
-    const loginNavBtn = document.getElementById('loginNavBtn');
-
-    function showSignupForm() {
-      signupForm.style.display = 'flex';
-      signupForm.setAttribute('aria-hidden','false');
-      loginForm.style.display = 'none';
-    }
-
-    function showLoginForm() {
-      loginForm.style.display = 'flex';
-      loginForm.setAttribute('aria-hidden','false');
-      signupForm.style.display = 'none';
-    }
-
-    function hideSignupForm() { signupForm.style.display = 'none'; signupForm.setAttribute('aria-hidden','true'); signupMessage.style.display='none'; }
-    function hideLoginForm() { loginForm.style.display = 'none'; loginForm.setAttribute('aria-hidden','true'); loginMessage.style.display='none'; }
-
-    signupNavBtn.addEventListener('click', showSignupForm);
-    loginNavBtn.addEventListener('click', showLoginForm);
-    signupCancel.addEventListener('click', hideSignupForm);
-    loginCancel.addEventListener('click', hideLoginForm);
-
-    signupRegionEl.addEventListener('change', () => {
-      signupOtherRegion.style.display = signupRegionEl.value==='other' ? 'block':'none';
-    });
-
-    // FIREBASE SIGNUP
-    signupForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const name = document.getElementById('signupName').value.trim();
-      const email = document.getElementById('signupEmail').value.trim();
-      const password = document.getElementById('signupPassword').value;
-      const region = signupRegionEl.value==='other' ? signupOtherRegion.value.trim() : signupRegionEl.value;
-
-      if(!name || !email || !password || !region){
-        signupMessage.style.display='block';
-        signupMessage.textContent='Please fill all fields';
-        return;
-      }
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          const user = userCredential.user;
-          signupMessage.style.display='block';
-          signupMessage.textContent=`Welcome ${name.split(' ')[0]}! Account created successfully.`;
-          signupForm.reset();
-          signupOtherRegion.style.display='none';
-          setTimeout(hideSignupForm,3000);
-        })
-        .catch(err => {
-          signupMessage.style.display='block';
-          signupMessage.textContent = err.message;
-        });
-    });
-
-    // FIREBASE LOGIN
-    loginForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
-
-      if(!email || !password){
-        loginMessage.style.display='block';
-        loginMessage.textContent='Please enter email and password';
-        return;
-      }
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          const user = userCredential.user;
-          loginMessage.style.display='block';
-          loginMessage.textContent=`Logged in as ${user.email}`;
-          loginForm.reset();
-          setTimeout(hideLoginForm,2000);
-        })
-        .catch(err=>{
-          loginMessage.style.display='block';
-          loginMessage.textContent = err.message;
-        });
-    });
-
-    // VIDEO PLAYER
-    const video = document.getElementById('video');
-    const titleEl = document.getElementById('title');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
-    let currentDownloadUrl = null;
-
-    function play(stream){
-      if(video.canPlayType('application/vnd.apple.mpegurl')){
-        video.src=stream;
-        video.play();
-      } else {
-        const hls = new Hls();
-        hls.loadSource(stream);
-        hls.attachMedia(video);
-      }
-    }
-
-    document.querySelectorAll('.item').forEach(item=>{
-      item.addEventListener('click',()=>{
-        document.querySelectorAll('.item').forEach(i=>i.classList.remove('active'));
-        item.classList.add('active');
-        const t=item.dataset.title;
-        const s=item.dataset.stream;
-        const d=item.dataset.download;
-        titleEl.textContent=t;
-        currentDownloadUrl=d;
-        downloadBtn.disabled=!d;
-        play(s);
+    const sections = ['home','featured','books','graphics','nature','news','contact','about'];
+    function showSection(id){
+      sections.forEach(s=>{
+        const el = document.getElementById(s);
+        if(!el) return;
+        if(s===id) el.removeAttribute('hidden'); else el.setAttribute('hidden','');
       });
-    });
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
 
-    downloadBtn.addEventListener('click',()=>{ if(currentDownloadUrl) window.location.href=currentDownloadUrl; });
-    fullscreenBtn.addEventListener('click',()=>{ if(!document.fullscreenElement) video.requestFullscreen(); else document.exitFullscreen(); });
+    function searchSection(sectionId, query){
+      const section = document.getElementById(sectionId);
+      if(!section) return;
+      const q = String(query||'').trim().toLowerCase();
+      const items = Array.from(section.querySelectorAll('.card'));
+      if(!q){ items.forEach(i=>i.style.display=''); return; }
+      items.forEach(item=>{
+        const text = item.innerText.toLowerCase();
+        item.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+
+    // Modal helpers
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    function openModal(html, attachAfterOpen){
+      document.getElementById('modal-content').innerHTML = html;
+      modalBackdrop.classList.add('show');
+      modalBackdrop.setAttribute('aria-hidden','false');
+      if(typeof attachAfterOpen === 'function') setTimeout(attachAfterOpen, 0);
+    }
+    function closeModal(){ modalBackdrop.classList.remove('show'); modalBackdrop.setAttribute('aria-hidden','true'); document.getElementById('modal-content').innerHTML=''; }
+    modalBackdrop.addEventListener('click', (e)=>{ if(e.target===modalBackdrop) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+    // Convenience modal renderers for auth
+    function renderLogin(){
+      openModal(`
+        <h3 id="modal-title">Log in to Nester Studio</h3>
+        <form id="login-form">
+          <div class="form-row"><label for="login-id">Email</label><input id="login-id" type="email" required placeholder="you@example.com"></div>
+          <div class="form-row"><label for="login-pw">Password</label><input id="login-pw" type="password" minlength="6" required></div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Log in</button><button class="btn btn-outline" type="button" onclick="renderSignup();return false">Sign up</button></div>
+          <div id="modal-error" class="error" style="display:none"></div>
+        </form>
+      `, ()=>{
+        document.getElementById('login-form').addEventListener('submit', handleLogin);
+        document.getElementById('login-id').focus();
+      });
+    }
+    function renderSignup(){
+      openModal(`
+        <h3 id="modal-title">Create an account</h3>
+        <form id="signup-form">
+          <div class="form-row"><label for="s-name">Full name</label><input id="s-name" type="text" required></div>
+          <div class="form-row"><label for="s-email">Email</label><input id="s-email" type="email" required></div>
+          <div class="form-row"><label for="s-pw">Password</label><input id="s-pw" type="password" minlength="6" required></div>
+          <div class="form-row"><label for="s-pw2">Confirm password</label><input id="s-pw2" type="password" minlength="6" required></div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Create account</button><button class="btn btn-outline" type="button" onclick="renderLogin();return false">Log in</button></div>
+          <div id="modal-error" class="error" style="display:none"></div>
+        </form>
+      `, ()=>{
+        document.getElementById('signup-form').addEventListener('submit', handleSignup);
+        document.getElementById('s-name').focus();
+      });
+    }
+    function renderForgot(){
+      openModal(`
+        <h3 id="modal-title">Reset password</h3>
+        <form id="forgot-form">
+          <div class="form-row"><label for="f-email">Email address</label><input id="f-email" type="email" required></div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Send reset link</button><button class="btn btn-outline" type="button" onclick="renderLogin();return false">Back</button></div>
+          <div id="modal-error" class="error" style="display:none"></div>
+        </form>
+      `, ()=>{
+        document.getElementById('forgot-form').addEventListener('submit', handleForgot);
+        document.getElementById('f-email').focus();
+      });
+    }
   </script>
 
-  <!-- Floating Icons -->
-  <div class="floating-icons">
-    <a href="https://wa.me/+250796104069" target="_blank" class="floating-icon whatsapp" title="Contact us on WhatsApp">
-      <i class="fab fa-whatsapp"></i>
-    </a>
-    <a href="mailto:nesterstu@gmail.com" class="floating-icon email" title="Send us an email">
-      <i class="fas fa-envelope"></i>
-    </a>
-  </div>
+  <!-- Firebase & App logic -->
+  <script type="module">
+    // Modular SDK imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      set,
+      push,
+      update,
+      remove,
+      onValue,
+      get,
+      child
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+    // --- Replace with your Firebase config (this uses your project's config found earlier) ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxMiJ80w2jd0b7eZ0FNPVmHRDDcqJs0-c",
+      authDomain: "nester-studio.firebaseapp.com",
+      databaseURL: "https://nester-studio-default-rtdb.firebaseio.com",
+      projectId: "nester-studio",
+      storageBucket: "nester-studio.firebasestorage.app",
+      messagingSenderId: "195939127580",
+      appId: "1:195939127580:web:47d3fd422c0b0b9f6daad9"
+    };
+
+    // Initialize
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Expose few low-level helpers for debugging (optional)
+    window._firebase = { app, auth, db };
+
+    // ---------- AUTH: handlers wired to modal forms ----------
+    async function handleSignup(e){
+      e.preventDefault();
+      const name = (document.getElementById('s-name')||{}).value?.trim();
+      const email = (document.getElementById('s-email')||{}).value?.trim();
+      const pw = (document.getElementById('s-pw')||{}).value || '';
+      const pw2 = (document.getElementById('s-pw2')||{}).value || '';
+      const errEl = document.getElementById('modal-error');
+
+      if(errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+      if(!name){ if(errEl){ errEl.textContent='Enter your name'; errEl.style.display='block'; } return; }
+      if(!email || !/^\S+@\S+\.\S+$/.test(email)){ if(errEl){ errEl.textContent='Enter a valid email'; errEl.style.display='block'; } return; }
+      if(pw.length < 6){ if(errEl){ errEl.textContent='Password must be at least 6 characters'; errEl.style.display='block'; } return; }
+      if(pw !== pw2){ if(errEl){ errEl.textContent='Passwords do not match'; errEl.style.display='block'; } return; }
+
+      try{
+        const cred = await createUserWithEmailAndPassword(auth, email, pw);
+        const uid = cred.user.uid;
+        // create a profile in DB
+        await set(ref(db, `users/${uid}`), { name, email, createdAt: Date.now() });
+        alert('Signup successful — logged in!');
+        closeModal();
+      }catch(err){
+        if(errEl){ errEl.textContent = err.message; errEl.style.display='block'; } else alert(err.message);
+      }
+    }
+
+    async function handleLogin(e){
+      e.preventDefault();
+      const email = (document.getElementById('login-id')||{}).value?.trim();
+      const pw = (document.getElementById('login-pw')||{}).value || '';
+      const errEl = document.getElementById('modal-error');
+      if(errEl){ errEl.style.display='none'; errEl.textContent=''; }
+
+      if(!email || !pw){ if(errEl){ errEl.textContent='Enter email and password'; errEl.style.display='block'; } return; }
+      try{
+        await signInWithEmailAndPassword(auth, email, pw);
+        alert('Login successful');
+        closeModal();
+      }catch(err){
+        if(errEl){ errEl.textContent='Invalid email or password.'; errEl.style.display='block'; } else alert(err.message);
+      }
+    }
+
+    async function handleForgot(e){
+      e.preventDefault();
+      const email = (document.getElementById('f-email')||{}).value?.trim();
+      const errEl = document.getElementById('modal-error');
+      if(errEl){ errEl.style.display='none'; errEl.textContent=''; }
+      if(!email || !/^\S+@\S+\.\S+$/.test(email)){ if(errEl){ errEl.textContent='Enter a valid email'; errEl.style.display='block'; } return; }
+      try{
+        await sendPasswordResetEmail(auth, email);
+        alert('Password reset email sent!');
+        closeModal();
+      }catch(err){
+        if(errEl){ errEl.textContent='Could not send reset email.'; errEl.style.display='block'; } else alert(err.message);
+      }
+    }
+
+    async function doLogout(){
+      try{
+        await signOut(auth);
+        alert('Logged out');
+      }catch(err){
+        alert('Error logging out: ' + (err.message || err));
+      }
+    }
+
+    // Expose to window so UI buttons can call them
+    window.handleSignup = handleSignup;
+    window.handleLogin = handleLogin;
+    window.handleForgot = handleForgot;
+    window.logout = doLogout;
+
+    // ---------- Admin check ----------
+    async function isAdmin(uid){
+      if(!uid) return false;
+      try{
+        const snap = await get(child(ref(db), `admins/${uid}`));
+        return snap.exists() && snap.val() === true;
+      }catch(e){
+        console.warn('admin check error', e);
+        return false;
+      }
+    }
+
+    // ---------- CRUD helpers for collections ----------
+    // collectionName should be one of: books, graphics, nature, news
+    function addItem(collectionName, item){
+      const colRef = ref(db, collectionName);
+      const newRef = push(colRef);
+      return set(newRef, { ...item, createdAt: Date.now() });
+    }
+    function updateItem(collectionName, id, updates){
+      const itemRef = ref(db, `${collectionName}/${id}`);
+      return update(itemRef, { ...updates, updatedAt: Date.now() });
+    }
+    function deleteItem(collectionName, id){
+      const itemRef = ref(db, `${collectionName}/${id}`);
+      return remove(itemRef);
+    }
+
+    // watch collection and call renderer
+    function watchCollection(collectionName, onChange){
+      const colRef = ref(db, collectionName);
+      onValue(colRef, snapshot=>{
+        const data = snapshot.val() || {};
+        const list = Object.keys(data).map(k=>({ id:k, ...data[k] }));
+        onChange(list);
+      });
+    }
+
+    // ---------- Renderers ----------
+    function renderGrid(targetEl, items, collectionName, currentUserIsAdmin){
+      targetEl.innerHTML = '';
+      if(!items.length){ targetEl.innerHTML = `<div style="grid-column:1/-1;color:var(--muted)">No items found.</div>`; return; }
+      items.forEach(item=>{
+        const card = document.createElement('div'); card.className = 'card';
+        const imgContainer = document.createElement('div'); imgContainer.className='media-cover';
+        if(item.imageUrl) {
+          const img = document.createElement('img');
+          img.src = item.imageUrl;
+          img.alt = item.title || 'Book cover';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          img.style.borderRadius = '10px';
+          imgContainer.appendChild(img);
+        } else {
+          imgContainer.textContent = item.title ? item.title[0] : '◼';
+        }
+        const meta = document.createElement('div'); meta.className='media-meta';
+        meta.innerHTML = `<div style="font-weight:700">${escapeHtml(item.title||item.name||'Untitled')}</div>
+                          <div style="color:var(--brand-1);margin:6px 0">${escapeHtml(item.author||item.subtitle||'')}</div>
+                          <p style="color:var(--muted);margin-bottom:12px">${escapeHtml(item.description||item.excerpt||'')}</p>`;
+        const actions = document.createElement('div');
+        actions.style.display = 'flex'; actions.style.gap='8px';
+        if(collectionName === 'books' && item.downloadUrl){
+          const readBtn = document.createElement('a'); readBtn.className='btn btn-primary'; readBtn.href=item.downloadUrl; readBtn.target='_blank'; readBtn.textContent='Read'; actions.appendChild(readBtn);
+        }
+        if(collectionName === 'graphics' && item.imageUrl){
+          const isVideo = /\.(mp4|avi|mov|wmv|flv|webm|mkv|ogv)$/i.test(item.imageUrl);
+          const viewBtn = document.createElement('a'); viewBtn.className='btn btn-primary'; viewBtn.href=item.imageUrl; viewBtn.target='_blank'; viewBtn.textContent=isVideo ? 'Watch' : 'View'; actions.appendChild(viewBtn);
+        }
+        if(collectionName === 'nature' && item.imageUrl){
+          const isVideo = /\.(mp4|avi|mov|wmv|flv|webm|mkv|ogv)$/i.test(item.imageUrl);
+          const viewBtn = document.createElement('a'); viewBtn.className='btn btn-primary'; viewBtn.href=item.imageUrl; viewBtn.target='_blank'; viewBtn.textContent=isVideo ? 'Watch' : 'View'; actions.appendChild(viewBtn);
+        }
+        if(item.downloadUrl){
+          const a = document.createElement('a'); a.className='btn btn-outline'; a.href=item.downloadUrl; a.download=''; a.textContent='Download'; actions.appendChild(a);
+        }
+        if(currentUserIsAdmin){
+          const editBtn = document.createElement('button'); editBtn.className='btn btn-outline'; editBtn.textContent='Edit';
+          editBtn.onclick = ()=> openEditModal(collectionName, item);
+          const delBtn = document.createElement('button'); delBtn.className='btn btn-primary'; delBtn.textContent='Delete';
+          delBtn.onclick = async ()=> {
+            if(!confirm('Delete this item?')) return;
+            try{ await deleteItem(collectionName, item.id); alert('Deleted'); }catch(e){ alert('Delete failed'); }
+          };
+          actions.appendChild(editBtn); actions.appendChild(delBtn);
+        }
+        meta.appendChild(actions);
+        card.appendChild(imgContainer); card.appendChild(meta);
+        targetEl.appendChild(card);
+      });
+    }
+
+    // simple safe HTML escape for text inserted into innerHTML fragments
+    function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // ---------- Admin add / edit modal ----------
+    function openAdminAddModal(defaultCollection){
+      openModal(`
+        <h3 id="modal-title">Add new item</h3>
+        <form id="admin-add-form">
+          <div class="form-row"><label>Collection</label><select id="admin-collection"><option value="books">Books</option><option value="graphics">Graphics</option><option value="nature">Nature</option><option value="news">News</option></select></div>
+          <div class="form-row"><label>Title</label><input id="admin-title" required></div>
+          <div class="form-row"><label>Author / Subtitle</label><input id="admin-author"></div>
+          <div class="form-row"><label>Image URL</label><input id="admin-image"></div>
+          <div class="form-row"><label>Download / Link URL</label><input id="admin-download"></div>
+          <div class="form-row"><label>Description / Excerpt</label><textarea id="admin-desc"></textarea></div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Add</button><button class="btn btn-outline" type="button" onclick="closeModal();return false">Cancel</button></div>
+          <div id="admin-error" class="error" style="display:none"></div>
+        </form>
+      `, ()=>{
+        const sel = document.getElementById('admin-collection');
+        if(defaultCollection) sel.value = defaultCollection;
+        document.getElementById('admin-add-form').addEventListener('submit', async (ev)=>{
+          ev.preventDefault();
+          const collection = sel.value;
+          const title = (document.getElementById('admin-title')||{}).value.trim();
+          const author = (document.getElementById('admin-author')||{}).value.trim();
+          const imageUrl = (document.getElementById('admin-image')||{}).value.trim();
+          const downloadUrl = (document.getElementById('admin-download')||{}).value.trim();
+          const description = (document.getElementById('admin-desc')||{}).value.trim();
+          const err = document.getElementById('admin-error');
+          if(!title){ err.textContent='Enter a title'; err.style.display='block'; return; }
+          try{
+            await addItem(collection, { title, author, imageUrl, downloadUrl, description, createdBy: auth.currentUser?.uid || null });
+            alert('Added');
+            closeModal();
+          }catch(e){
+            err.textContent = e.message || 'Error adding'; err.style.display='block';
+          }
+        });
+      });
+    }
+
+    function openEditModal(collectionName, item){
+      openModal(`
+        <h3 id="modal-title">Edit item</h3>
+        <form id="admin-edit-form">
+          <div class="form-row"><label>Title</label><input id="edit-title" required></div>
+          <div class="form-row"><label>Author</label><input id="edit-author"></div>
+          <div class="form-row"><label>Image URL</label><input id="edit-image"></div>
+          <div class="form-row"><label>Download URL</label><input id="edit-download"></div>
+          <div class="form-row"><label>Description</label><textarea id="edit-desc"></textarea></div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Save</button><button class="btn btn-outline" type="button" onclick="closeModal();return false">Cancel</button></div>
+          <div id="admin-error" class="error" style="display:none"></div>
+        </form>
+      `, ()=>{
+        document.getElementById('edit-title').value = item.title || '';
+        document.getElementById('edit-author').value = item.author || '';
+        document.getElementById('edit-image').value = item.imageUrl || '';
+        document.getElementById('edit-download').value = item.downloadUrl || '';
+        document.getElementById('edit-desc').value = item.description || '';
+        document.getElementById('admin-edit-form').addEventListener('submit', async (ev)=>{
+          ev.preventDefault();
+          const updates = {
+            title: (document.getElementById('edit-title')||{}).value.trim(),
+            author: (document.getElementById('edit-author')||{}).value.trim(),
+            imageUrl: (document.getElementById('edit-image')||{}).value.trim(),
+            downloadUrl: (document.getElementById('edit-download')||{}).value.trim(),
+            description: (document.getElementById('edit-desc')||{}).value.trim()
+          };
+          const err = document.getElementById('admin-error');
+          try{
+            await updateItem(collectionName, item.id, updates);
+            alert('Saved');
+            closeModal();
+          }catch(e){
+            err.textContent = e.message || 'Error saving'; err.style.display='block';
+          }
+        });
+      });
+    }
+
+    // ---------- Wire DB to UI ----------
+    const featuredGrid = document.getElementById('featured-grid');
+    const booksGrid = document.getElementById('books-grid');
+    const graphicsGrid = document.getElementById('graphics-grid');
+    const natureGrid = document.getElementById('nature-grid');
+    const newsGrid = document.getElementById('news-grid');
+
+    // maintain admin control placeholders
+    const booksAdminControls = document.getElementById('books-admin-controls');
+    const graphicsAdminControls = document.getElementById('graphics-admin-controls');
+    const natureAdminControls = document.getElementById('nature-admin-controls');
+    const newsAdminControls = document.getElementById('news-admin-controls');
+
+    let currentUserIsAdmin = false;
+
+    function setupAdminControls(){
+      const makeBtn = (label, fn)=> { const b=document.createElement('button'); b.className='btn btn-outline'; b.textContent=label; b.onclick=fn; return b; };
+      [booksAdminControls, graphicsAdminControls, natureAdminControls, newsAdminControls].forEach((el,idx)=>{
+        if(!el) return;
+        el.innerHTML = '';
+        if(currentUserIsAdmin){
+          const col = ['books','graphics','nature','news'][idx];
+          el.appendChild(makeBtn('Add', ()=> openAdminAddModal(col)));
+        }
+      });
+    }
+
+    // watch and render functions
+    watchCollection('books', (items)=> {
+      renderGrid(featuredGrid, items.slice(0,3), 'books', currentUserIsAdmin);
+      renderGrid(booksGrid, items, 'books', currentUserIsAdmin);
+    });
+    watchCollection('graphics', (items)=> renderGrid(graphicsGrid, items, 'graphics', currentUserIsAdmin));
+    watchCollection('nature', (items)=> renderGrid(natureGrid, items, 'nature', currentUserIsAdmin));
+    watchCollection('news', (items)=> renderGrid(newsGrid, items, 'news', currentUserIsAdmin));
+
+    // ---------- Auth state listener ----------
+    onAuthStateChanged(auth, async (user)=>{
+      const cta = document.getElementById('cta-area');
+      if(user){
+        // check admin
+        currentUserIsAdmin = await isAdmin(user.uid);
+        // render CTA with profile and logout
+        cta.innerHTML = '';
+        const profileBtn = document.createElement('button'); profileBtn.className='btn btn-outline'; profileBtn.textContent = user.displayName || user.email;
+        profileBtn.onclick = ()=> alert('Profile: ' + (user.email || ''));
+        const logoutBtn = document.createElement('button'); logoutBtn.className='btn btn-primary'; logoutBtn.textContent = 'Log out';
+        logoutBtn.onclick = doLogout;
+        cta.appendChild(profileBtn);
+        if(currentUserIsAdmin){
+          const adminBadge = document.createElement('span'); adminBadge.className='admin-badge'; adminBadge.textContent='Admin'; cta.appendChild(adminBadge);
+        }
+        cta.appendChild(logoutBtn);
+
+        // show admin controls if admin
+        setupAdminControls();
+      } else {
+        currentUserIsAdmin = false;
+        cta.innerHTML = `<button class="btn btn-outline" onclick="renderLogin()">Log in</button><button class="btn btn-primary" onclick="renderSignup()">Sign up</button>`;
+        setupAdminControls();
+      }
+    });
+
+    // ---------- Utility: simple client-side rules reminder ----------
+    // NOTE: before production, configure Realtime Database Rules in Firebase Console.
+    // Minimal recommended rules:
+    // {
+    //  "rules": {
+    //    "users": { "$uid": { ".read": "$uid === auth.uid", ".write": "$uid === auth.uid" } },
+    //    "books": { ".read": true, ".write": "root.child('admins').child(auth.uid).val() === true" },
+    //    "graphics": { ".read": true, ".write": "root.child('admins').child(auth.uid).val() === true" },
+    //    "nature": { ".read": true, ".write": "root.child('admins').child(auth.uid).val() === true" },
+    //    "news": { ".read": true, ".write": "root.child('admins').child(auth.uid).val() === true" },
+    //    "admins": { ".read": "root.child('admins').child(auth.uid).val() === true", ".write": "root.child('admins').child(auth.uid).val() === true" }
+    //  }
+    // }
+
+    // small helper to show errors in console
+    window.addItem = addItem; window.updateItem = updateItem; window.deleteItem = deleteItem;
+
+  </script>
 </body>
 </html>
