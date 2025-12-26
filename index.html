@@ -26,6 +26,9 @@
     .btn{padding:8px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:700}
     .btn-primary{background:var(--brand-1);color:#fff}
     .btn-outline{background:transparent;border:2px solid rgba(0,0,0,0.06)}
+    .hamburger{display:none;flex-direction:column;cursor:pointer;padding:4px}
+    .hamburger span{width:25px;height:3px;background:#333;margin:3px 0;border-radius:2px;transition:0.3s}
+    .mobile-menu{position:fixed;top:72px;left:0;width:100%;background:#fff;border-top:1px solid rgba(0,0,0,0.1);display:none;flex-direction:column;padding:20px;z-index:999;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
     .hero{background-image:linear-gradient(135deg,var(--brand-1),var(--brand-2)), url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1200&q=80');background-blend-mode:overlay;background-size:cover;background-position:center;color:white;padding:90px 20px 60px;text-align:center;border-bottom-left-radius:30px;border-bottom-right-radius:30px}
     .container{max-width:var(--max-width);margin:0 auto;padding:48px 20px}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
@@ -44,7 +47,7 @@
     input[type=text],input[type=password],input[type=email],textarea,select{padding:12px;border-radius:8px;border:1px solid #e6e6e9}
     .error{color:#b00020;font-size:0.95rem;margin-top:6px}
     .admin-badge{background:#111;color:#fff;padding:6px 8px;border-radius:6px;font-weight:700}
-    @media (max-width:880px){ .nav-row{padding:12px} .links{display:none} }
+    @media (max-width:880px){ .nav-row{padding:12px} .links{display:none} .hamburger{display:flex} }
     @media (max-width:600px){
       .hero{padding:60px 20px 40px}
       .hero h2{font-size:1.5rem}
@@ -79,6 +82,11 @@
           <a href="privacy-policy.html">Privacy Policy</a>
 
         </div>
+        <div class="hamburger" onclick="toggleMobileMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </nav>
 
       <div class="cta" id="cta-area">
@@ -88,6 +96,16 @@
       </div>
     </div>
   </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#books" onclick="showSection('books'); toggleMobileMenu()">Books</a>
+    <a href="#graphics" onclick="showSection('graphics'); toggleMobileMenu()">Graphics</a>
+    <a href="#nature" onclick="showSection('nature'); toggleMobileMenu()">Nature</a>
+    <a href="#news" onclick="showSection('news'); toggleMobileMenu()">News</a>
+    <a href="#contact" onclick="showSection('contact'); toggleMobileMenu()">Contact</a>
+    <a href="#about" onclick="showSection('about'); toggleMobileMenu()">About</a>
+    <a href="privacy-policy.html" onclick="toggleMobileMenu()">Privacy Policy</a>
+  </div>
 
   <main>
     <section id="home" class="hero" aria-labelledby="hero-title">
@@ -149,7 +167,7 @@
         <input id="search-news" class="search-input" type="search" placeholder="Search news..." oninput="searchSection('news', this.value)">
         <div id="news-admin-controls" style="margin-left:8px"></div>
       </div>
-      <div id="news-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:12px"></div>
+      <div id="news-grid" class="grid" style="margin-top:12px"></div>
     </section>
 
     <section id="about" class="container" hidden>
@@ -204,6 +222,20 @@
       });
       window.scrollTo({top:0,behavior:'smooth'});
     }
+
+    function toggleMobileMenu(){
+      const menu = document.getElementById('mobile-menu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('mobile-menu');
+      const hamburger = document.querySelector('.hamburger');
+      if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
 
     function searchSection(sectionId, query){
       const section = document.getElementById(sectionId);
