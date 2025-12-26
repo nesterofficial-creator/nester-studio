@@ -73,12 +73,12 @@
 
       <nav>
         <div class="links" id="desktop-links">
-          <a href="#books" onclick="showSection('books')">Books</a>
-          <a href="#graphics" onclick="showSection('graphics')">Graphics</a>
-          <a href="#nature" onclick="showSection('nature')">Nature</a>
-          <a href="#news" onclick="showSection('news')">News</a>
-          <a href="#contact" onclick="showSection('contact')">Contact</a>
-          <a href="#about" onclick="showSection('about')">About</a>
+          <a href="#books-section" onclick="scrollToSection('books-section')">Books</a>
+          <a href="#graphics-section" onclick="scrollToSection('graphics-section')">Graphics</a>
+          <a href="#nature-section" onclick="scrollToSection('nature-section')">Nature</a>
+          <a href="#news-section" onclick="scrollToSection('news-section')">News</a>
+          <a href="#contact-section" onclick="scrollToSection('contact-section')">Contact</a>
+          <a href="#about-section" onclick="scrollToSection('about-section')">About</a>
           <a href="privacy-policy.html">Privacy Policy</a>
 
         </div>
@@ -98,12 +98,12 @@
   </header>
 
   <div class="mobile-menu" id="mobile-menu">
-    <a href="#books" onclick="showSection('books'); toggleMobileMenu()">Books</a>
-    <a href="#graphics" onclick="showSection('graphics'); toggleMobileMenu()">Graphics</a>
-    <a href="#nature" onclick="showSection('nature'); toggleMobileMenu()">Nature</a>
-    <a href="#news" onclick="showSection('news'); toggleMobileMenu()">News</a>
-    <a href="#contact" onclick="showSection('contact'); toggleMobileMenu()">Contact</a>
-    <a href="#about" onclick="showSection('about'); toggleMobileMenu()">About</a>
+    <a href="#books-section" onclick="scrollToSection('books-section'); toggleMobileMenu()">Books</a>
+    <a href="#graphics-section" onclick="scrollToSection('graphics-section'); toggleMobileMenu()">Graphics</a>
+    <a href="#nature-section" onclick="scrollToSection('nature-section'); toggleMobileMenu()">Nature</a>
+    <a href="#news-section" onclick="scrollToSection('news-section'); toggleMobileMenu()">News</a>
+    <a href="#contact-section" onclick="scrollToSection('contact-section'); toggleMobileMenu()">Contact</a>
+    <a href="#about-section" onclick="scrollToSection('about-section'); toggleMobileMenu()">About</a>
     <a href="privacy-policy.html" onclick="toggleMobileMenu()">Privacy Policy</a>
   </div>
 
@@ -113,8 +113,8 @@
         <h2 id="hero-title">Nester Studio</h2>
         <p>Creating beauty through books, design, and nature — professional services, portfolios, and downloadable resources.</p>
         <div style="margin-top:18px">
-          <button class="btn btn-primary" onclick="showSection('books')">Browse Books</button>
-          <button class="btn" style="margin-left:10px" onclick="showSection('graphics')">View Portfolio</button>
+          <button class="btn btn-primary" onclick="scrollToSection('books-section')">Browse Books</button>
+          <button class="btn" style="margin-left:10px" onclick="scrollToSection('graphics-section')">View Portfolio</button>
         </div>
       </div>
     </section>
@@ -127,52 +127,47 @@
       </div>
     </section>
 
-    <section id="books" class="container" hidden>
-      <button class="btn" onclick="showSection('home')">← Back</button>
-      <h2 style="margin-top:18px">Book Collection</h2>
+    <section id="books-section" class="container">
+      <h2>Book Collection</h2>
       <p style="color:var(--muted)">Download sample chapters or the full PDFs.</p>
 
       <div class="search-bar">
-        <input id="search-books" class="search-input" type="search" placeholder="Search books..." oninput="searchSection('books', this.value)">
+        <input id="search-books" class="search-input" type="search" placeholder="Search books..." oninput="searchSection('books-section', this.value)">
         <div id="books-admin-controls" style="margin-left:8px"></div>
       </div>
 
       <div id="books-grid" class="grid" style="margin-top:16px"></div>
     </section>
 
-    <section id="graphics" class="container" hidden>
-      <button class="btn" onclick="showSection('home')">← Back</button>
-      <h2 style="margin-top:18px">Graphic Portfolio</h2>
+    <section id="graphics-section" class="container">
+      <h2>Graphic Portfolio</h2>
       <div class="search-bar">
-        <input id="search-graphics" class="search-input" type="search" placeholder="Search graphics..." oninput="searchSection('graphics', this.value)">
+        <input id="search-graphics" class="search-input" type="search" placeholder="Search graphics..." oninput="searchSection('graphics-section', this.value)">
         <div id="graphics-admin-controls" style="margin-left:8px"></div>
       </div>
       <div id="graphics-grid" class="grid" style="margin-top:16px"></div>
     </section>
 
-    <section id="nature" class="container" hidden>
-      <button class="btn" onclick="showSection('home')">← Back</button>
-      <h2 style="margin-top:18px">Nature Gallery</h2>
+    <section id="nature-section" class="container">
+      <h2>Nature Gallery</h2>
       <div class="search-bar">
-        <input id="search-nature" class="search-input" type="search" placeholder="Search nature..." oninput="searchSection('nature', this.value)">
+        <input id="search-nature" class="search-input" type="search" placeholder="Search nature..." oninput="searchSection('nature-section', this.value)">
         <div id="nature-admin-controls" style="margin-left:8px"></div>
       </div>
       <div id="nature-grid" class="grid" style="margin-top:16px"></div>
     </section>
 
-    <section id="news" class="container" hidden>
-      <button class="btn" onclick="showSection('home')">← Back</button>
-      <h2 style="margin-top:18px">Latest News</h2>
+    <section id="news-section" class="container">
+      <h2>Latest News</h2>
       <div class="search-bar">
-        <input id="search-news" class="search-input" type="search" placeholder="Search news..." oninput="searchSection('news', this.value)">
+        <input id="search-news" class="search-input" type="search" placeholder="Search news..." oninput="searchSection('news-section', this.value)">
         <div id="news-admin-controls" style="margin-left:8px"></div>
       </div>
       <div id="news-grid" class="grid" style="margin-top:12px"></div>
     </section>
 
-    <section id="about" class="container" hidden>
-      <button class="btn" onclick="showSection('home')">← Back</button>
-      <h2 style="margin-top:18px">About Nester Studio</h2>
+    <section id="about-section" class="container">
+      <h2>About Nester Studio</h2>
       <p style="color:var(--muted)">Welcome to Nester Studio, your creative hub for books, graphic design, and nature media.</p>
       <div style="margin-top:20px">
         <p>We specialize in creating beautiful and meaningful content across various mediums. From publishing insightful books to designing stunning graphics and capturing the essence of nature through media, our mission is to inspire and connect with our audience.</p>
@@ -180,9 +175,8 @@
       </div>
     </section>
 
-    <section id="contact" class="container" hidden>
-      <button class="btn" onclick="showSection('home')">← Back</button>
-      <h2 style="margin-top:18px">Contact Us</h2>
+    <section id="contact-section" class="container">
+      <h2>Contact Us</h2>
       <p style="color:var(--muted)">Get in touch with us for inquiries, collaborations, or more information.</p>
       <div style="margin-top:20px">
         <p><strong>Phone:</strong> +250796104069</p>
@@ -213,14 +207,9 @@
     // small utilities
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    const sections = ['home','featured','books','graphics','nature','news','contact','about'];
-    function showSection(id){
-      sections.forEach(s=>{
-        const el = document.getElementById(s);
-        if(!el) return;
-        if(s===id) el.removeAttribute('hidden'); else el.setAttribute('hidden','');
-      });
-      window.scrollTo({top:0,behavior:'smooth'});
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:'smooth'});
     }
 
     function toggleMobileMenu(){
