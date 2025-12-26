@@ -113,8 +113,32 @@
         <h2 id="hero-title">Nester Studio</h2>
         <p>Creating beauty through books, design, and nature — professional services, portfolios, and downloadable resources.</p>
         <div style="margin-top:18px">
-          <button class="btn btn-primary" onclick="scrollToSection('books-section')">Browse Books</button>
-          <button class="btn" style="margin-left:10px" onclick="scrollToSection('graphics-section')">View Portfolio</button>
+          <button class="btn btn-primary" onclick="showSection('books')">Browse Books</button>
+          <button class="btn" style="margin-left:10px" onclick="showSection('graphics')">View Portfolio</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="home-highlights" class="container">
+      <h2>Highlights</h2>
+      <p style="color:var(--muted);margin-bottom:14px">A quick look at Graphics, Nature, and News (preview).</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <div class="card">
+          <h3 style="margin-top:0">Graphics</h3>
+          <div id="graphics-preview-grid" class="grid" style="grid-template-columns:1fr;gap:10px;margin-top:10px"></div>
+          <div style="margin-top:10px"><a href="#graphics-section" onclick="showSection('graphics')" class="btn btn-outline">View all</a></div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">Nature</h3>
+          <div id="nature-preview-grid" class="grid" style="grid-template-columns:1fr;gap:10px;margin-top:10px"></div>
+          <div style="margin-top:10px"><a href="#nature-section" onclick="showSection('nature')" class="btn btn-outline">View all</a></div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">News</h3>
+          <div id="news-preview-grid" class="grid" style="grid-template-columns:1fr;gap:10px;margin-top:10px"></div>
+          <div style="margin-top:10px"><a href="#news-section" onclick="showSection('news')" class="btn btn-outline">View all</a></div>
         </div>
       </div>
     </section>
@@ -127,47 +151,52 @@
       </div>
     </section>
 
-    <section id="books-section" class="container">
-      <h2>Book Collection</h2>
+    <section id="books" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Book Collection</h2>
       <p style="color:var(--muted)">Download sample chapters or the full PDFs.</p>
 
       <div class="search-bar">
-        <input id="search-books" class="search-input" type="search" placeholder="Search books..." oninput="searchSection('books-section', this.value)">
+        <input id="search-books" class="search-input" type="search" placeholder="Search books..." oninput="searchSection('books', this.value)">
         <div id="books-admin-controls" style="margin-left:8px"></div>
       </div>
 
       <div id="books-grid" class="grid" style="margin-top:16px"></div>
     </section>
 
-    <section id="graphics-section" class="container">
-      <h2>Graphic Portfolio</h2>
+    <section id="graphics" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Graphic Portfolio</h2>
       <div class="search-bar">
-        <input id="search-graphics" class="search-input" type="search" placeholder="Search graphics..." oninput="searchSection('graphics-section', this.value)">
+        <input id="search-graphics" class="search-input" type="search" placeholder="Search graphics..." oninput="searchSection('graphics', this.value)">
         <div id="graphics-admin-controls" style="margin-left:8px"></div>
       </div>
       <div id="graphics-grid" class="grid" style="margin-top:16px"></div>
     </section>
 
-    <section id="nature-section" class="container">
-      <h2>Nature Gallery</h2>
+    <section id="nature" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Nature Gallery</h2>
       <div class="search-bar">
-        <input id="search-nature" class="search-input" type="search" placeholder="Search nature..." oninput="searchSection('nature-section', this.value)">
+        <input id="search-nature" class="search-input" type="search" placeholder="Search nature..." oninput="searchSection('nature', this.value)">
         <div id="nature-admin-controls" style="margin-left:8px"></div>
       </div>
       <div id="nature-grid" class="grid" style="margin-top:16px"></div>
     </section>
 
-    <section id="news-section" class="container">
-      <h2>Latest News</h2>
+    <section id="news" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Latest News</h2>
       <div class="search-bar">
-        <input id="search-news" class="search-input" type="search" placeholder="Search news..." oninput="searchSection('news-section', this.value)">
+        <input id="search-news" class="search-input" type="search" placeholder="Search news..." oninput="searchSection('news', this.value)">
         <div id="news-admin-controls" style="margin-left:8px"></div>
       </div>
       <div id="news-grid" class="grid" style="margin-top:12px"></div>
     </section>
 
-    <section id="about-section" class="container">
-      <h2>About Nester Studio</h2>
+    <section id="about" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">About Nester Studio</h2>
       <p style="color:var(--muted)">Welcome to Nester Studio, your creative hub for books, graphic design, and nature media.</p>
       <div style="margin-top:20px">
         <p>We specialize in creating beautiful and meaningful content across various mediums. From publishing insightful books to designing stunning graphics and capturing the essence of nature through media, our mission is to inspire and connect with our audience.</p>
@@ -175,8 +204,9 @@
       </div>
     </section>
 
-    <section id="contact-section" class="container">
-      <h2>Contact Us</h2>
+    <section id="contact" class="container" hidden>
+      <button class="btn" onclick="showSection('home')">← Back</button>
+      <h2 style="margin-top:18px">Contact Us</h2>
       <p style="color:var(--muted)">Get in touch with us for inquiries, collaborations, or more information.</p>
       <div style="margin-top:20px">
         <p><strong>Phone:</strong> +250796104069</p>
@@ -592,6 +622,12 @@
     const graphicsGrid = document.getElementById('graphics-grid');
     const natureGrid = document.getElementById('nature-grid');
     const newsGrid = document.getElementById('news-grid');
+    // Preview grids shown on the home page (compact previews from other collections)
+    const graphicsPreviewGrid = document.getElementById('graphics-preview-grid');
+    const naturePreviewGrid = document.getElementById('nature-preview-grid');
+    const newsPreviewGrid = document.getElementById('news-preview-grid');
+    // How many items to show in homepage previews (set to 2 or 3 as desired)
+    const HOMEPAGE_PREVIEW_COUNT = 3;
 
     // maintain admin control placeholders
     const booksAdminControls = document.getElementById('books-admin-controls');
@@ -615,12 +651,21 @@
 
     // watch and render functions
     watchCollection('books', (items)=> {
-      renderGrid(featuredGrid, items.slice(0,3), 'books', currentUserIsAdmin);
+      renderGrid(featuredGrid, items.slice(0,HOMEPAGE_PREVIEW_COUNT), 'books', currentUserIsAdmin);
       renderGrid(booksGrid, items, 'books', currentUserIsAdmin);
     });
-    watchCollection('graphics', (items)=> renderGrid(graphicsGrid, items, 'graphics', currentUserIsAdmin));
-    watchCollection('nature', (items)=> renderGrid(natureGrid, items, 'nature', currentUserIsAdmin));
-    watchCollection('news', (items)=> renderGrid(newsGrid, items, 'news', currentUserIsAdmin));
+    watchCollection('graphics', (items)=>{
+      renderGrid(graphicsGrid, items, 'graphics', currentUserIsAdmin);
+      if(graphicsPreviewGrid) renderGrid(graphicsPreviewGrid, items.slice(0,HOMEPAGE_PREVIEW_COUNT), 'graphics', currentUserIsAdmin);
+    });
+    watchCollection('nature', (items)=>{
+      renderGrid(natureGrid, items, 'nature', currentUserIsAdmin);
+      if(naturePreviewGrid) renderGrid(naturePreviewGrid, items.slice(0,HOMEPAGE_PREVIEW_COUNT), 'nature', currentUserIsAdmin);
+    });
+    watchCollection('news', (items)=>{
+      renderGrid(newsGrid, items, 'news', currentUserIsAdmin);
+      if(newsPreviewGrid) renderGrid(newsPreviewGrid, items.slice(0,HOMEPAGE_PREVIEW_COUNT), 'news', currentUserIsAdmin);
+    });
 
     // ---------- Auth state listener ----------
     onAuthStateChanged(auth, async (user)=>{
