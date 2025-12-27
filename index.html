@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Nester Studio — Creative Hub (Firebase)</title>
+  <title>Nester Studio Log — Creative Hub (Firebase)</title>
   <meta name="description" content="Nester Studio — books, graphic design, nature media.">
   <meta name="author" content="Nester Studio">
   <meta name="google-adsense-account" content="ca-pub-4483015607837705">
@@ -190,6 +190,7 @@
     <section id="news" class="container" hidden>
       <button class="btn" onclick="showSection('home')">← Back</button>
       <h2 style="margin-top:18px">Latest News</h2>
+      <p style="color:var(--muted);margin-bottom:20px;max-width:600px">Stay updated with the latest announcements, creative insights, and industry updates from Nester Studio. Discover our newest publications, design trends, and nature-inspired media.</p>
       <div class="search-bar">
         <input id="search-news" class="search-input" type="search" placeholder="Search news..." oninput="searchSection('news', this.value)">
         <div id="news-admin-controls" style="margin-left:8px"></div>
@@ -518,16 +519,40 @@
       if(!items.length){ targetEl.innerHTML = `<div style="grid-column:1/-1;color:var(--muted)">No items found.</div>`; return; }
       items.forEach(item=>{
         const card = document.createElement('div'); card.className = 'card';
-        const imgContainer = document.createElement('div'); imgContainer.className='media-cover';
+        const imgContainer = document.createElement('div'); imgContainer.className='media-cover'; imgContainer.style.position = 'relative';
         if(item.imageUrl) {
-          const img = document.createElement('img');
-          img.src = item.imageUrl;
-          img.alt = item.title || 'Book cover';
-          img.style.width = '100%';
-          img.style.height = '100%';
-          img.style.objectFit = 'cover';
-          img.style.borderRadius = '10px';
-          imgContainer.appendChild(img);
+          const isVideo = /\.(mp4|avi|mov|wmv|flv|webm|mkv|ogv)$/i.test(item.imageUrl);
+          if(isVideo){
+            const video = document.createElement('video');
+            video.src = item.imageUrl;
+            video.style.width = '100%';
+            video.style.height = '100%';
+            video.style.objectFit = 'cover';
+            video.style.borderRadius = '10px';
+            video.preload = 'metadata'; // Load metadata to show first frame
+            imgContainer.appendChild(video);
+            // Add play button overlay
+            const playIcon = document.createElement('div');
+            playIcon.innerHTML = '▶';
+            playIcon.style.position = 'absolute';
+            playIcon.style.top = '50%';
+            playIcon.style.left = '50%';
+            playIcon.style.transform = 'translate(-50%, -50%)';
+            playIcon.style.fontSize = '48px';
+            playIcon.style.color = 'white';
+            playIcon.style.textShadow = '0 0 10px rgba(0,0,0,0.7)';
+            playIcon.style.pointerEvents = 'none'; // So it doesn't interfere with clicks
+            imgContainer.appendChild(playIcon);
+          } else {
+            const img = document.createElement('img');
+            img.src = item.imageUrl;
+            img.alt = item.title || 'Media';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '10px';
+            imgContainer.appendChild(img);
+          }
         } else {
           imgContainer.textContent = item.title ? item.title[0] : '◼';
         }
