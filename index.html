@@ -51,6 +51,9 @@
     .links a.active{color:var(--brand-1);font-weight:800;background:rgba(102,126,234,0.06)}
     .card h3{margin:0 0 8px 0}
     @media (max-width:880px){ .nav-row{padding:12px} .links{display:none} .hamburger{display:flex} }
+    .comments-section { margin-top: 16px; }
+    .comment { border: 1px solid rgba(0,0,0,0.1); padding: 8px; margin-bottom: 8px; border-radius: 8px; }
+    .reply { background: rgba(0,0,0,0.05); }
     @media (max-width:600px){
       .hero{padding:60px 20px 40px}
       .hero h2{font-size:1.5rem}
@@ -281,6 +284,8 @@
       if(typeof attachAfterOpen === 'function') setTimeout(attachAfterOpen, 0);
     }
     function closeModal(){ modalBackdrop.classList.remove('show'); modalBackdrop.setAttribute('aria-hidden','true'); document.getElementById('modal-content').innerHTML=''; }
+    window.openModal = openModal;
+    window.closeModal = closeModal;
     modalBackdrop.addEventListener('click', (e)=>{ if(e.target===modalBackdrop) closeModal(); });
     document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
 
@@ -349,6 +354,19 @@
         }
         try{ history.replaceState(null,'', '#'+id); }catch(e){}
         updateActiveNav(id);
+        if (id === 'news') {
+          // Load comments for all news items
+          setTimeout(() => {
+            const newsItems = document.querySelectorAll('#news-grid .card');
+            newsItems.forEach(card => {
+              const commentsList = card.querySelector('.comments-list');
+              if (commentsList) {
+                const newsId = commentsList.id.replace('comments-', '');
+                loadComments(newsId);
+              }
+            });
+          }, 100); // Small delay to ensure DOM is updated
+        }
       }
 
       // initialize view from hash (or default to home)
@@ -368,7 +386,8 @@
       signInWithEmailAndPassword,
       sendPasswordResetEmail,
       onAuthStateChanged,
-      signOut
+      signOut,
+      updateProfile
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import {
       getDatabase,
@@ -419,6 +438,8 @@
       try{
         const cred = await createUserWithEmailAndPassword(auth, email, pw);
         const uid = cred.user.uid;
+        // set display name
+        await updateProfile(cred.user, { displayName: name });
         // create a profile in DB
         await set(ref(db, `users/${uid}`), { name, email, createdAt: Date.now() });
         alert('Signup successful — logged in!');
@@ -587,6 +608,15 @@
           actions.appendChild(editBtn); actions.appendChild(delBtn);
         }
         meta.appendChild(actions);
+        // Add comments section for news
+        if(collectionName === 'news' && targetEl.id === 'news-grid'){
+          const commentsDiv = document.createElement('div');
+          commentsDiv.className = 'comments-section';
+          commentsDiv.innerHTML = `<h4 style="margin-top:16px;margin-bottom:8px">Comments</h4>
+                                   <div class="comments-list" id="comments-${item.id}"></div>
+                                   <button class="btn btn-outline comment-btn" onclick="showCommentForm('${item.id}', null)">Add Comment</button>`;
+          meta.appendChild(commentsDiv);
+        }
         card.appendChild(imgContainer); card.appendChild(meta);
         targetEl.appendChild(card);
       });
@@ -595,7 +625,122 @@
     // simple safe HTML escape for text inserted into innerHTML fragments
     function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-    // ---------- Admin add / edit modal ----------
+    // ---------- Comments functions ----------
+    async function loadComments(newsId) {
+      const commentsList = document.getElementById(`comments-${newsId}`);
+      if (!commentsList) return;
+      commentsList.innerHTML = '';
+      try {
+        const commentsRef = ref(db, `comments/${newsId}`);
+        const snapshot = await get(commentsRef);
+        if (snapshot.exists()) {
+          const comments = snapshot.val();
+          Object.keys(comments).forEach(key => {
+            const comment = comments[key];
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            commentDiv.innerHTML = `
+              <div style="margin-bottom:8px"><strong>${escapeHtml(comment.author || 'Anonymous')}</strong> <small style="color:var(--muted)">${new Date(comment.timestamp).toLocaleString()}</small></div>
+              <p style="margin:0 0 8px">${escapeHtml(comment.text)}</p>
+              <button class="btn btn-outline" onclick="showCommentForm('${newsId}', '${key}')">Reply</button>
+              ${comment.replies ? Object.keys(comment.replies).map(replyKey => {
+                const reply = comment.replies[replyKey];
+                return `
+                  <div class="reply" style="margin-left:20px;margin-top:8px;border-left:2px solid var(--muted);padding-left:8px">
+                    <div><strong>${escapeHtml(reply.author || 'Anonymous')}</strong> <small style="color:var(--muted)">${new Date(reply.timestamp).toLocaleString()}</small></div>
+                    <p style="margin:0">${escapeHtml(reply.text)}</p>
+                  </div>
+                `;
+              }).join('') : ''}
+            `;
+            commentsList.appendChild(commentDiv);
+          });
+        }
+      } catch (e) {
+        console.error('Error loading comments:', e);
+      }
+    }
+
+    function showCommentForm(newsId, parentId) {
+      if (!auth.currentUser) {
+        alert('Please log in to comment.');
+        renderLogin();
+        return;
+      }
+      const formHtml = `
+        <h3>${parentId ? 'Reply to Comment' : 'Add Comment'}</h3>
+        <form id="comment-form">
+          <div class="form-row"><label>Your Name</label><input id="comment-author" value="${auth.currentUser.displayName || auth.currentUser.email || ''}" required></div>
+          <div class="form-row"><label>Comment</label><textarea id="comment-text" required></textarea></div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Submit</button><button class="btn btn-outline" type="button" onclick="closeModal();return false">Cancel</button></div>
+        </form>
+      `;
+      openModal(formHtml);
+      document.getElementById('comment-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const author = document.getElementById('comment-author').value.trim();
+        const text = document.getElementById('comment-text').value.trim();
+        try {
+          if (parentId) {
+            // Add reply
+            const commentRef = ref(db, `comments/${newsId}/${parentId}`);
+            const snapshot = await get(commentRef);
+            if (snapshot.exists()) {
+              const comment = snapshot.val();
+              const replies = comment.replies || {};
+              const newReplyKey = push(ref(db)).key;
+              replies[newReplyKey] = {
+                author,
+                text,
+                timestamp: new Date().toISOString()
+              };
+              await update(commentRef, { replies });
+            }
+          } else {
+            // Add new comment
+            const newCommentRef = push(ref(db, `comments/${newsId}`));
+            await set(newCommentRef, {
+              author,
+              text,
+              timestamp: new Date().toISOString()
+            });
+          }
+          closeModal();
+          loadComments(newsId);
+        } catch (error) {
+          alert('Error adding comment: ' + error.message);
+        }
+      });
+    }
+    window.showCommentForm = showCommentForm;
+
+    // Load comments when news section is shown
+    function showSection(id){
+      const all = Array.from(document.querySelectorAll('main > section'));
+      if(id === 'home'){
+        all.forEach(s=>{ s.hidden = !(s.id==='home' || s.id==='home-highlights' || s.id==='featured'); });
+        const el = document.getElementById('home'); if(el) el.scrollIntoView({behavior:'smooth'});
+      } else {
+        all.forEach(s=> s.hidden = s.id !== id);
+        const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'});
+      }
+      try{ history.replaceState(null,'', '#'+id); }catch(e){}
+      updateActiveNav(id);
+      if (id === 'news') {
+        // Load comments for all news items
+        setTimeout(() => {
+          const newsItems = document.querySelectorAll('#news-grid .card');
+          newsItems.forEach(card => {
+            const commentsList = card.querySelector('.comments-list');
+            if (commentsList) {
+              const newsId = commentsList.id.replace('comments-', '');
+              loadComments(newsId);
+            }
+          });
+        }, 100); // Small delay to ensure DOM is updated
+      }
+    }
+    window.showSection = showSection;
     function openAdminAddModal(defaultCollection){
       openModal(`
         <h3 id="modal-title">Add new item</h3>
@@ -721,6 +866,8 @@
     watchCollection('news', (items)=>{
       renderGrid(newsGrid, items, 'news', currentUserIsAdmin);
       if(newsPreviewGrid) renderGrid(newsPreviewGrid, items.slice(0,HOMEPAGE_PREVIEW_COUNT), 'news', currentUserIsAdmin);
+      // Load comments for news items
+      items.forEach(item => loadComments(item.id));
     });
 
     // ---------- Auth state listener ----------
@@ -729,6 +876,20 @@
       if(user){
         // check admin
         currentUserIsAdmin = await isAdmin(user.uid);
+        // Ensure displayName is set
+        if (!user.displayName) {
+          try {
+            const userSnap = await get(ref(db, `users/${user.uid}`));
+            if (userSnap.exists()) {
+              const data = userSnap.val();
+              if (data.name) {
+                await updateProfile(user, { displayName: data.name });
+              }
+            }
+          } catch (e) {
+            console.error('Error updating displayName:', e);
+          }
+        }
         // render CTA with profile and logout
         cta.innerHTML = '';
         const profileBtn = document.createElement('button'); profileBtn.className='btn btn-outline'; profileBtn.textContent = user.displayName || user.email;
